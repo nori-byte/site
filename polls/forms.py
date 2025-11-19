@@ -3,6 +3,7 @@ from .models import AdvUser
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 from .models import user_registrated
+from django.contrib.auth.forms import  AuthenticationForm
 
 class ChangeUserInfoForm(forms.ModelForm):
     email = forms.EmailField(required=True,
@@ -44,3 +45,7 @@ class RegisterUserForm(forms.ModelForm):
     class Meta:
         model = AdvUser
         fields = ('username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'send_messages')
+
+class CustomAuthenticationForm(AuthenticationForm):
+    username = forms.CharField(label='Логин')
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput())

@@ -1,11 +1,9 @@
 from django.contrib.auth import logout
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template.loader import get_template
-from django.views.generic import UpdateView
-
-from .models import Question, Choice, AdvUser
+from .models import Question, Choice
 from django.template import loader, TemplateDoesNotExist
 from django.urls import reverse
 from django.views import generic
@@ -21,12 +19,12 @@ from django.contrib.auth.views import PasswordChangeView
 from django.views.generic import CreateView
 from .forms import RegisterUserForm
 from django.views.generic import TemplateView
-from django.core.signing import Signer
 from django.core.signing import BadSignature
 from .utilities import signer
 from django.views.generic import DeleteView
 from django.contrib import messages
 
+from .forms import CustomAuthenticationForm
 
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
@@ -62,6 +60,18 @@ def vote(request, question_id):
 
 class BBLoginView(LoginView):
     template_name = 'polls/login.html'
+    authentication_form = CustomAuthenticationForm
+
+    def form_valid(self, form):
+        messages.success(self.request, f'Добро пожаловать, {form.get_user().username}!')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Неверное имя пользователя или пароль')
+        return super().form_invalid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('profile')
 
 def index(request):
     return HttpResponse("Главная страничка для опросов")
@@ -124,6 +134,11 @@ def user_activate(request, sign):
         user.save()
     return render(request, template)
 
+# выход
+def user_logout(request):
+    logout(request)
+    messages.success(request, 'Вы успешно вышли из системы')
+    return redirect('polls:index')
 #40 стр
 class DeleteUserView (LoginRequiredMixin, DeleteView):
     model = AdvUser
