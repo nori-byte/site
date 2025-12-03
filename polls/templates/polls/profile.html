@@ -2,11 +2,28 @@
 {% load bootstrap4 %}
 {% block title %} Профиль пользователя {% endblock %}
 {% block content %}
-    <h2>Профиль пользователя {{ user.username }}</h2>
-    {% if user.first_name and user.last_name %}
-        <p>Здравствуйте, {{ user.first_name }} {{ user.last_name }} </p>
-    {% else %}
-        <p>Здравствуйте! </p>
-    {% endif %}
-    <h3>Ваши объявления</h3>
+<h2>Профиль пользователя {{ user.username }}</h2>
+{% if user.avatar %}
+<img src="{{ user.avatar.url }}" alt="Аватар пользователя" width="200" height="200">
+{% else %}
+<p>Нет аватара</p>
+{% endif %}
+<h3>Ваши опросы</h3>
+{% if questions %}
+{% for question in questions %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ question.title_text }}</h5>
+        <p class="card-text">
+            <strong>Текст вопроса:</strong> {{ question.question_text }} <br>
+            <strong>Опубликовано:</strong> {{ question.pub_date }} <br>
+            <strong>Автор:</strong> {{ question.author }}
+        </p>
+        <a href="{% url 'polls:detail' question.id %}" class="btn btn-primary btn-sm">Посмотреть детали</a>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<p>Вы пока не задали ни одного вопроса</p>
+{% endif %}
 {% endblock %}

@@ -1,18 +1,22 @@
-{% extends 'layout/basic.html' %}
-{% load static %}
-{% load bootstrap4 %}
-
+{% extends "layout/basic.html" %}
+{% block title %} Главная страница {% endblock %}
 {% block content %}
-    {% if latest_question_list %}
-<ul>
-    {% for question in latest_question_list %}
-    <li><a href="{% url 'polls:detail' question.id %}">{{question.question_text}}</a> </li>
-    {% endfor %}
-</ul>
-    {% else %}
-     <p>
-         Нет вопросов!
-     </p>
-
+{% if latest_question_list %}
+{% for question in latest_question_list %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ question.title_text }}</h5>
+        <p class="card-text">
+            <strong>Текст вопроса:</strong> {{ question.question_text }} <br>
+            <strong>Опубликовано:</strong> {{ question.pub_date }} <br>
+            <strong>Автор:</strong> {{ question.author }}
+        </p>
+        <a href="{% url 'polls:detail' question.id %}" class="btn btn-primary btn-sm">Посмотреть
+            детали</a>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<p>На данный момент нет опубликованных вопросов</p>
 {% endif %}
 {% endblock %}
