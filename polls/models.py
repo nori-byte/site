@@ -15,6 +15,7 @@ class AdvUser(AbstractUser):
 class Question(models.Model):
     title_text = models.CharField(max_length=100, default='')
     question_text = models.CharField(max_length=200)
+    short_description = models.CharField(max_length=100, default='')
     pub_date = models.DateTimeField('date published')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='authored_questions')
     image = models.ImageField(upload_to='avatars/', blank=True, null=True)

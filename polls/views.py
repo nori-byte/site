@@ -99,7 +99,7 @@ class IndexView(generic.ListView):
     context_object_name = 'latest_question_list'
 
     def get_queryset(self):
-        recent_date = timezone.now() - datetime.timedelta(seconds=30)
+        recent_date = timezone.now() - datetime.timedelta(minutes=5)
         if self.request.user.is_superuser:
             return Question.objects.order_by('-pub_date')
         else:

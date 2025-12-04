@@ -53,8 +53,8 @@ class RegisterUserForm(forms.ModelForm):
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ['title_text', 'question_text', 'image']
-        labels = {'title_text': 'Заголовок вопроса', 'question_text': 'Текст вопроса', 'image': 'Изображение', }
+        fields = ['title_text', 'question_text', 'image', 'short_description']
+        labels = {'title_text': 'Заголовок вопроса', 'question_text': 'Текст вопроса', 'image': 'Изображение', 'short_description': 'Краткое описание' }
 
 
 class ChoiceForm(forms.ModelForm):
